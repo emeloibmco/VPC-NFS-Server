@@ -55,13 +55,13 @@ yum install nfs-utils
 
 **Paso 2:** Crear los directorios donde se quieren montar los directorios compartidos con el servidor nfs.
 
-```
+```shell
 mkdir -p /mnt/nfs/var/nfs
 ```
 
-Paso 3: Montar el directorio compartido en el que se acaba de crear:
+**Paso 3:** Montar el directorio compartido en el que se acaba de crear:
 
-```
+```shell
 mount 192.168.1.100:/var/nfs /mnt/nfs/var/nfs
 ```
 
@@ -72,3 +72,13 @@ En el comando anterior primero se especifica la IP del servidor nfs seguido del 
 Para comprobar que la configuración se hizo de manera correcta se puede crear un archivo dentro del directorio compartido ya sea desde el lado del servidor o desde el lado del cliente y debería encontrarlo en ambas máquinas. 
 
 Si se desea añadir más de un cliente a la configuración, añada sus directorios e IPs en **/etc/export** desde el lado del servidor y siga los pasos de la guía **Configuración del cliente NFS.**
+
+Es posible que desee exportar un file system específico, para crearlo puede seguir los pasos de este [link.](https://rm-rf.es/crear-y-eliminar-particiones-con-fdisk-en-linux/)
+
+## Referencias
+
+Para tener más información sobre la configuración del servidor y clientes NFS diríjase al siguiente [link.](https://www.howtoforge.com/tutorial/setting-up-an-nfs-server-and-client-on-centos-7/)
+
+## **Autores**
+
+IBM Cloud Tech Sales
