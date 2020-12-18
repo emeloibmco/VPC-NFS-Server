@@ -6,26 +6,26 @@ En el presente repositorio se describen los pasos de configuración de un NFS Se
 
 ## Configuración del servidor NFS 
 
-Paso 1: Instalación de **nfs utils** en el servidor NFS mediante el siguiente comando:
+**Paso 1:** Instalación de **nfs utils** en el servidor NFS mediante el siguiente comando:
 
 ```shell
 yum -y install nfs-utils
 ```
 
-Paso 2: Habilitar e iniciar el NFS server service mediante los siguientes comandos:
+**Paso 2:** Habilitar e iniciar el NFS server service mediante los siguientes comandos:
 
 ```shell
 systemctl enable nfs-server.servicesystemctl
 start nfs-server.service
 ```
 
-Paso 3: Exportar los directorios a los cuales se desea que el cliente tenga acceso. Mediante los siguientes comandos se crea el directorio var/nfs, que para la guía va a ser el directorio compartido entre el cliente y el servidor. Dependiendo del directorio a compartir es probable que necesite cambiar su propietario para que pueda ser accedido por el cliente, para este caso puede dirigirse a la documentación del comando [chown.](https://www.servidoresadmin.com/comando-chown-en-linux/)
+**Paso 3:** Exportar los directorios a los cuales se desea que el cliente tenga acceso. Mediante los siguientes comandos se crea el directorio **var/nfs**, que para la guía va a ser el directorio compartido entre el cliente y el servidor. Dependiendo del directorio a compartir es probable que necesite cambiar su propietario para que pueda ser accedido por el cliente, para este caso puede dirigirse a la documentación del comando [chown.](https://www.servidoresadmin.com/comando-chown-en-linux/)
 
 ```shell
 mkdir /var/nfs
 ```
 
-Luego de esto,  para especificar los directorios a exportar modificaremos el archivo /etc/export como se muestra a continuación:
+Luego de esto,  para especificar los directorios a exportar modificaremos el archivo **/etc/export** como se muestra a continuación:
 
 ```shell
 nano /etc/exports
@@ -41,8 +41,34 @@ En el archivo anterior primero se especifica el directorio a exportar, luego la 
 
 Para hacer efectivos los cambios es necesario correr el comando:
 
-```
+```shell
 exportfs -a
 ```
 
 ## Configuración del cliente NFS
+
+**Paso 1:** Instalación de **nfs utils** en el cliente NFS mediante el siguiente comando:
+
+```shell
+yum install nfs-utils
+```
+
+**Paso 2:** Crear los directorios donde se quieren montar los directorios compartidos con el servidor nfs.
+
+```
+mkdir -p /mnt/nfs/var/nfs
+```
+
+Paso 3: Montar el directorio compartido en el que se acaba de crear:
+
+```
+mount 192.168.1.100:/var/nfs /mnt/nfs/var/nfs
+```
+
+En el comando anterior primero se especifica la IP del servidor nfs seguido del directorio compartido y finalmente la carpeta del cliente donde se montará.
+
+## Pruebas
+
+Para comprobar que la configuración se hizo de manera correcta se puede crear un archivo dentro del directorio compartido ya sea desde el lado del servidor o desde el lado del cliente y debería encontrarlo en ambas máquinas. 
+
+Si se desea añadir más de un cliente a la configuración, añada sus directorios e IPs en **/etc/export** desde el lado del servidor y siga los pasos de la guía **Configuración del cliente NFS.**
